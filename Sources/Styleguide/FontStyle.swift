@@ -1,6 +1,10 @@
 import Foundation
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 extension Styleguide {
 	/// The semantic typography roles used by a styleguide.
@@ -30,27 +34,27 @@ extension Styleguide {
 		)
 
 		/// The primary large-display typography token.
-		let headline1: FontToken
+		public let headline1: FontToken
 
 		/// The secondary large-display typography token.
-		let headline2: FontToken
+		public let headline2: FontToken
 
 		/// The primary section-heading typography token.
-		let headline3: FontToken
+		public let headline3: FontToken
 
 		/// The compact section-heading typography token.
-		let headline4: FontToken
+		public let headline4: FontToken
 
 		/// The primary body typography token.
-		let body1: FontToken
+		public let body1: FontToken
 
 		/// The compact body typography token.
-		let body2: FontToken
+		public let body2: FontToken
 
 		/// The primary caption typography token.
-		let caption1: FontToken
+		public let caption1: FontToken
 
 		/// The compact caption typography token.
-		let caption2: FontToken
+		public let caption2: FontToken
 	}
 }

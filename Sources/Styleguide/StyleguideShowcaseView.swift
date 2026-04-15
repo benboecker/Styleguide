@@ -35,7 +35,7 @@ private extension StyleguideShowcaseView {
 				.font(styleguide.headline1)
 				.foregroundStyle(styleguide.foregroundPrimary)
 
-			Text("Define semantic tokens once, then consume them directly in SwiftUI and UIKit.")
+			Text("Define semantic tokens once, then consume them directly in SwiftUI and the native UI framework.")
 				.font(styleguide.body1)
 				.foregroundStyle(styleguide.foregroundSecondary)
 				.fixedSize(horizontal: false, vertical: true)
@@ -43,7 +43,7 @@ private extension StyleguideShowcaseView {
 			HStack(spacing: styleguide.small) {
 				showcaseBadge("Semantic Groups")
 				showcaseBadge("SwiftUI Environment")
-				showcaseBadge("UIKit Conversions")
+				showcaseBadge("Native UI Fonts")
 			}
 		}
 		.padding(styleguide.large)
@@ -163,28 +163,18 @@ private extension StyleguideShowcaseView {
 
 	var uiKitUsageSection: some View {
 		showcaseSection(
-			title: "Use In UIKit",
-			description: "UIKit code can stay on the same semantic model through explicit namespace access, contextual shorthand, or token-level resolution."
+			title: "Use In \(platformFrameworkName)",
+			description: "\(platformFrameworkName) code can stay on the same semantic model through contextual shorthand and token-level resolution."
 		) {
 			LazyVGrid(columns: showcaseColumns, spacing: styleguide.medium) {
 				codeCard(
 					title: "Contextual Assignment",
-					lines: [
-						"let styleguide = appStyleguide",
-						"titleLabel.font = styleguide.headline3",
-						"subtitleLabel.textColor = styleguide.foregroundSecondary",
-						"button.tintColor = styleguide.accentPrimary",
-					]
+					lines: contextualPlatformUsageLines
 				)
 
 				codeCard(
 					title: "Typed Tokens",
-					lines: [
-						"let styleguide = appStyleguide",
-						"let titleFont: UIFont = styleguide.headline3",
-						"let accentColor: UIColor = styleguide.accentPrimary",
-						"let accentToken: DynamicColor = styleguide.accentPrimary",
-					]
+					lines: typedPlatformUsageLines
 				)
 
 				codeCard(
@@ -214,7 +204,7 @@ private extension StyleguideShowcaseView {
 	var typographySection: some View {
 		showcaseSection(
 			title: "Typography Tokens",
-			description: "The same font token resolves to `Font` in SwiftUI and `UIFont` in UIKit."
+			description: "The same font token resolves to `Font` in SwiftUI and `\(platformFontTypeName)` in \(platformFrameworkName)."
 		) {
 			VStack(spacing: styleguide.medium) {
 				ForEach(typographyEntries.indices, id: \.self) { index in
@@ -237,7 +227,7 @@ private extension StyleguideShowcaseView {
 							.font(entry.token.font)
 							.foregroundStyle(styleguide.foregroundPrimary)
 
-						Text(verbatim: "UIKit: let value: UIFont = styleguide.\(entry.name)")
+						Text(verbatim: "\(platformFrameworkName): let value: \(platformFontTypeName) = styleguide.\(entry.name)")
 							.font(codeFont)
 							.foregroundStyle(styleguide.foregroundTertiary)
 					}
@@ -345,6 +335,48 @@ private extension StyleguideShowcaseView {
 			(name: "medium", value: styleguide.spacing.medium),
 			(name: "large", value: styleguide.spacing.large),
 			(name: "extraLarge", value: styleguide.spacing.extraLarge),
+		]
+	}
+
+	var platformFrameworkName: String {
+		#if canImport(UIKit)
+		"UIKit"
+		#elseif canImport(AppKit)
+		"AppKit"
+		#endif
+	}
+
+	var platformColorTypeName: String {
+		#if canImport(UIKit)
+		"UIColor"
+		#elseif canImport(AppKit)
+		"NSColor"
+		#endif
+	}
+
+	var platformFontTypeName: String {
+		#if canImport(UIKit)
+		"UIFont"
+		#elseif canImport(AppKit)
+		"NSFont"
+		#endif
+	}
+
+	var contextualPlatformUsageLines: [String] {
+		[
+			"let styleguide = appStyleguide",
+			"titleLabel.font = styleguide.headline3",
+			"subtitleLabel.textColor = styleguide.foregroundSecondary",
+			"accentLabel.textColor = styleguide.accentPrimary",
+		]
+	}
+
+	var typedPlatformUsageLines: [String] {
+		[
+			"let styleguide = appStyleguide",
+			"let titleFont: \(platformFontTypeName) = styleguide.headline3",
+			"let accentColor: \(platformColorTypeName) = styleguide.accentPrimary",
+			"let accentToken: DynamicColor = styleguide.accentPrimary",
 		]
 	}
 

@@ -1,6 +1,10 @@
 import Foundation
-import UIKit
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 extension DynamicColor {
 	/// An internal hexadecimal color value used by `DynamicColor`.
@@ -100,6 +104,7 @@ extension DynamicColor.HexColor {
 		)
 	}
 
+	#if canImport(UIKit)
 	var uiColor: UIColor {
 		UIColor(
 			red: red,
@@ -108,6 +113,16 @@ extension DynamicColor.HexColor {
 			alpha: alpha
 		)
 	}
+	#elseif canImport(AppKit)
+	var nsColor: NSColor {
+		NSColor(
+			srgbRed: red,
+			green: green,
+			blue: blue,
+			alpha: alpha
+		)
+	}
+	#endif
 }
 
 private extension DynamicColor.HexColor {

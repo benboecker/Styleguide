@@ -1,18 +1,19 @@
 # Styleguide
 
-`Styleguide` is an iOS Swift package for defining semantic colors, fonts, spacing, and shadows in one place, then using those same styles from SwiftUI and UIKit.
+`Styleguide` is an Apple-platform Swift package for defining semantic colors, fonts, spacing, and shadows in one place, then using those same styles from SwiftUI, UIKit, and AppKit.
 
 The package is intentionally narrow:
 
 - We define a `Styleguide` once.
 - We inject it into SwiftUI through the environment.
-- We use the same semantic tokens from UIKit through contextual type inference.
+- We use the same semantic tokens from UIKit and AppKit through contextual type inference.
 
 Our public surface is deliberately small. There is no public default theme; consumers are expected to define their own `Styleguide`.
 
 ## Requirements
 
-- iOS 26+
+- iOS 17+
+- macOS 14+
 - Swift 6.2+
 - Xcode with Swift Package Manager support
 
@@ -68,8 +69,8 @@ Those groups are only for constructing the styleguide. Once we have a `Styleguid
 
 Depending on type context, the same member can resolve differently:
 
-- `styleguide.accentPrimary` can be a `DynamicColor` or a `UIColor`
-- `styleguide.headline2` can be a `Font` or a `UIFont`
+- `styleguide.accentPrimary` can be a `DynamicColor`, a `UIColor`, or an `NSColor`
+- `styleguide.headline2` can be a `Font`, a `UIFont`, or an `NSFont`
 - `styleguide.large` is a `Styleguide.Shadow`
 
 ## Creating A Styleguide
@@ -130,7 +131,7 @@ let appStyleguide = Styleguide(
 
 ### Inject The Styleguide
 
-The package exposes `EnvironmentValues.styleguide`, so we usually inject our styleguide once near the app root:
+The package exposes `EnvironmentValues.styleguide`, so we usually inject our styleguide once near the app root on iOS and macOS:
 
 ```swift
 import SwiftUI
@@ -207,7 +208,7 @@ let shadow: Styleguide.Shadow = styleguide.large
 
 ## UIKit
 
-UIKit uses the same dynamic members. The call site decides whether Swift should resolve a font or color as a UIKit type.
+On iOS-family platforms, UIKit uses the same dynamic members. The call site decides whether Swift should resolve a font or color as a UIKit type.
 
 ```swift
 import UIKit
@@ -272,6 +273,49 @@ let shadow: Styleguide.Shadow = styleguide.large
 let scheme: ColorScheme = traitCollection.userInterfaceStyle == .dark ? .dark : .light
 
 layer.shadowColor = UIColor(shadow.color.resolvedColor(for: scheme)).cgColor
+```
+
+## AppKit
+
+On macOS, AppKit uses the same dynamic members and resolves them to `NSColor` and `NSFont` instead.
+
+```swift
+import AppKit
+import Styleguide
+
+final class DashboardViewController: NSViewController {
+	private let titleLabel = NSTextField(labelWithString: "")
+	private let subtitleLabel = NSTextField(labelWithString: "")
+
+	private let styleguide: Styleguide
+
+	init(styleguide: Styleguide) {
+		self.styleguide = styleguide
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	@available(*, unavailable)
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		titleLabel.font = styleguide.headline2
+		titleLabel.textColor = styleguide.foregroundPrimary
+		subtitleLabel.font = styleguide.body1
+		subtitleLabel.textColor = styleguide.foregroundSecondary
+	}
+}
+```
+
+If there is no destination type, annotate explicitly:
+
+```swift
+let accentColor: NSColor = styleguide.accentPrimary
+let titleFont: NSFont = styleguide.headline2
+let accentToken: DynamicColor = styleguide.accentPrimary
 ```
 
 ## Transparent And Clear Colors

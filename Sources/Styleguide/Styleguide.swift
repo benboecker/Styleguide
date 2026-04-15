@@ -1,5 +1,10 @@
 import Foundation
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 /// The semantic token container used to define and consume app styling.
 @dynamicMemberLookup
@@ -34,10 +39,17 @@ public struct Styleguide: Sendable {
 		self[keypath]
 	}
 
+	#if canImport(UIKit)
 	/// Returns a UIKit color through the dynamic-member shorthand API when the call site expects `UIColor`.
 	public subscript(dynamicMember keypath: KeyPath<ColorStyle, DynamicColor>) -> UIColor {
 		self[keypath].uiColor
 	}
+	#elseif canImport(AppKit)
+	/// Returns an AppKit color through the dynamic-member shorthand API when the call site expects `NSColor`.
+	public subscript(dynamicMember keypath: KeyPath<ColorStyle, DynamicColor>) -> NSColor {
+		self[keypath].nsColor
+	}
+	#endif
 
 	/// Returns a shadow token through the dynamic-member shorthand API.
 	public subscript(dynamicMember keypath: KeyPath<Shadows, Shadow>) -> Shadow {
@@ -49,10 +61,17 @@ public struct Styleguide: Sendable {
 		self[keypath].font
 	}
 
+	#if canImport(UIKit)
 	/// Returns a UIKit font through the dynamic-member shorthand API when the call site expects `UIFont`.
 	public subscript(dynamicMember keypath: KeyPath<FontStyle, FontToken>) -> UIFont {
 		self[keypath].uiFont
 	}
+	#elseif canImport(AppKit)
+	/// Returns an AppKit font through the dynamic-member shorthand API when the call site expects `NSFont`.
+	public subscript(dynamicMember keypath: KeyPath<FontStyle, FontToken>) -> NSFont {
+		self[keypath].nsFont
+	}
+	#endif
 }
 
 private extension Styleguide {

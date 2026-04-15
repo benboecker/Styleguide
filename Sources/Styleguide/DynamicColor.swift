@@ -1,7 +1,12 @@
-import UIKit
+import Foundation
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
-/// A semantic color token that stores light and dark variants for SwiftUI and UIKit.
+/// A semantic color token that stores light and dark variants for SwiftUI and native platform UI frameworks.
 public struct DynamicColor: Sendable, ShapeStyle {
 	/// Creates a color token that uses the same hexadecimal value in both appearances.
 	///
@@ -64,6 +69,7 @@ public struct DynamicColor: Sendable, ShapeStyle {
 		}
 	}
 
+	#if canImport(UIKit)
 	/// Returns a dynamic UIKit color that adapts to the current trait environment.
 	var uiColor: UIColor {
 		UIColor { traitCollection in
@@ -82,6 +88,23 @@ public struct DynamicColor: Sendable, ShapeStyle {
 			light.uiColor
 		}
 	}
+	#elseif canImport(AppKit)
+	/// Returns a dynamic AppKit color that adapts to the current appearance.
+	var nsColor: NSColor {
+		NSColor(name: nil) { appearance in
+			resolvedNSColor(for: appearance)
+		}
+	}
+
+	/// Resolves the token to a concrete AppKit color for a specific appearance.
+	func resolvedNSColor(for appearance: NSAppearance) -> NSColor {
+		if appearance.isDarkAppearance {
+			return dark.nsColor
+		}
+
+		return light.nsColor
+	}
+	#endif
 
 	/// A fully transparent color token for both appearances.
 	static let clear = DynamicColor(light: .clear, dark: .clear)
@@ -94,3 +117,12 @@ private extension DynamicColor {
 		self.dark = dark
 	}
 }
+
+#if canImport(AppKit)
+private extension NSAppearance {
+	/// Indicates whether the appearance should resolve semantic colors as dark variants.
+	var isDarkAppearance: Bool {
+		bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+	}
+}
+#endif

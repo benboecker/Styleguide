@@ -5,7 +5,10 @@ import PackageDescription
 
 let package = Package(
 	name: "Styleguide",
-	platforms: [.iOS(.v26)],
+	platforms: [
+		.iOS(.v17),
+		.macOS(.v14),
+	],
 	products: [
 		.library(name: "Styleguide", targets: ["Styleguide"]),
 	],

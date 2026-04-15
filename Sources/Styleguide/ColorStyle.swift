@@ -37,39 +37,39 @@ extension Styleguide {
 		)
 
 		/// The primary foreground color for readable content.
-		let foregroundPrimary: DynamicColor
+		public let foregroundPrimary: DynamicColor
 
 		/// The secondary foreground color for supporting content.
-		let foregroundSecondary: DynamicColor
+		public let foregroundSecondary: DynamicColor
 
 		/// The tertiary foreground color for subtle supporting content.
-		let foregroundTertiary: DynamicColor
+		public let foregroundTertiary: DynamicColor
 
 		/// The primary background color for surfaces.
-		let backgroundPrimary: DynamicColor
+		public let backgroundPrimary: DynamicColor
 
 		/// The secondary background color for nested surfaces.
-		let backgroundSecondary: DynamicColor
+		public let backgroundSecondary: DynamicColor
 
 		/// The tertiary background color for emphasized nested surfaces.
-		let backgroundTertiary: DynamicColor
+		public let backgroundTertiary: DynamicColor
 
 		/// The primary accent color for key emphasis.
-		let accentPrimary: DynamicColor
+		public let accentPrimary: DynamicColor
 
 		/// The secondary accent color for softer emphasis.
-		let accentSecondary: DynamicColor
+		public let accentSecondary: DynamicColor
 
 		/// The tertiary accent color for strong accent contrast.
-		let accentTertiary: DynamicColor
+		public let accentTertiary: DynamicColor
 
 		/// The semantic success color.
-		let confirmation: DynamicColor
+		public let confirmation: DynamicColor
 
 		/// The semantic warning color.
-		let warning: DynamicColor
+		public let warning: DynamicColor
 
 		/// The semantic error color.
-		let error: DynamicColor
+		public let error: DynamicColor
 	}
 }

@@ -22,7 +22,7 @@ RootView()
 	.environment(\.styleguide, appStyleguide)
 ```
 
-Read it from the environment and use the dynamic members directly:
+Read it from the environment and use the dynamic members directly on iOS and macOS:
 
 ```swift
 @Environment(\.colorScheme) private var colorScheme
@@ -44,7 +44,7 @@ Text("Weekly summary")
 
 ## UIKit Consumption
 
-UIKit uses the same members, resolved through type context:
+On iOS-family platforms, UIKit uses the same members, resolved through type context:
 
 ```swift
 view.backgroundColor = styleguide.backgroundPrimary
@@ -58,6 +58,23 @@ If there is no destination type, add one explicitly:
 let accentColor: UIColor = styleguide.accentPrimary
 let accentToken: DynamicColor = styleguide.accentPrimary
 let shadow: Styleguide.Shadow = styleguide.large
+```
+
+## AppKit Consumption
+
+On macOS, the same members resolve through AppKit type context:
+
+```swift
+titleLabel.font = styleguide.headline2
+subtitleLabel.textColor = styleguide.foregroundSecondary
+```
+
+If there is no destination type, add one explicitly:
+
+```swift
+let accentColor: NSColor = styleguide.accentPrimary
+let titleFont: NSFont = styleguide.headline2
+let accentToken: DynamicColor = styleguide.accentPrimary
 ```
 
 ## Transparent Color Edge Case
