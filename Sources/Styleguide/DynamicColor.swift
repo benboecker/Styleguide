@@ -48,7 +48,7 @@ public struct DynamicColor: Sendable, ShapeStyle {
 	}
 
 	/// Resolves the token to a concrete SwiftUI color for a specific environment.
-	public func resolvedColor(in environment: EnvironmentValues) -> Color {
+	func resolvedColor(in environment: EnvironmentValues) -> Color {
 		resolvedColor(for: environment.colorScheme)
 	}
 
@@ -65,14 +65,14 @@ public struct DynamicColor: Sendable, ShapeStyle {
 	}
 
 	/// Returns a dynamic UIKit color that adapts to the current trait environment.
-	public var uiColor: UIColor {
+	var uiColor: UIColor {
 		UIColor { traitCollection in
 			resolvedUIColor(for: traitCollection)
 		}
 	}
 
 	/// Resolves the token to a concrete UIKit color for a specific trait collection.
-	public func resolvedUIColor(for traitCollection: UITraitCollection) -> UIColor {
+	func resolvedUIColor(for traitCollection: UITraitCollection) -> UIColor {
 		switch traitCollection.userInterfaceStyle {
 		case .dark:
 			dark.uiColor
@@ -84,7 +84,7 @@ public struct DynamicColor: Sendable, ShapeStyle {
 	}
 
 	/// A fully transparent color token for both appearances.
-	public static let clear = DynamicColor(light: .clear, dark: .clear)
+	static let clear = DynamicColor(light: .clear, dark: .clear)
 }
 
 private extension DynamicColor {

@@ -1,9 +1,9 @@
 import Foundation
 import SwiftUI
 
-public extension Styleguide {
+extension Styleguide {
 	/// The semantic color roles used by a styleguide.
-	struct ColorStyle: Sendable {
+	public struct ColorStyle: Sendable {
 		/// Creates the semantic colors for a styleguide.
 		public init(foregroundPrimary: DynamicColor, foregroundSecondary: DynamicColor, foregroundTertiary: DynamicColor, backgroundPrimary: DynamicColor, backgroundSecondary: DynamicColor, backgroundTertiary: DynamicColor, accentPrimary: DynamicColor, accentSecondary: DynamicColor, accentTertiary: DynamicColor, confirmation: DynamicColor, warning: DynamicColor, error: DynamicColor) {
 			self.foregroundPrimary = foregroundPrimary
@@ -21,7 +21,7 @@ public extension Styleguide {
 		}
 
 		/// The neutral baseline color preset used by `Styleguide.default`.
-		public static let `default` = Self(
+		static let `default` = Self(
 			foregroundPrimary: DynamicColor(light: 0x111827, dark: 0xF9FAFB),
 			foregroundSecondary: DynamicColor(light: 0x4B5563, dark: 0xD1D5DB),
 			foregroundTertiary: DynamicColor(light: 0x6B7280, dark: 0x9CA3AF),
@@ -37,39 +37,39 @@ public extension Styleguide {
 		)
 
 		/// The primary foreground color for readable content.
-		public let foregroundPrimary: DynamicColor
+		let foregroundPrimary: DynamicColor
 
 		/// The secondary foreground color for supporting content.
-		public let foregroundSecondary: DynamicColor
+		let foregroundSecondary: DynamicColor
 
 		/// The tertiary foreground color for subtle supporting content.
-		public let foregroundTertiary: DynamicColor
+		let foregroundTertiary: DynamicColor
 
 		/// The primary background color for surfaces.
-		public let backgroundPrimary: DynamicColor
+		let backgroundPrimary: DynamicColor
 
 		/// The secondary background color for nested surfaces.
-		public let backgroundSecondary: DynamicColor
+		let backgroundSecondary: DynamicColor
 
 		/// The tertiary background color for emphasized nested surfaces.
-		public let backgroundTertiary: DynamicColor
+		let backgroundTertiary: DynamicColor
 
 		/// The primary accent color for key emphasis.
-		public let accentPrimary: DynamicColor
+		let accentPrimary: DynamicColor
 
 		/// The secondary accent color for softer emphasis.
-		public let accentSecondary: DynamicColor
+		let accentSecondary: DynamicColor
 
 		/// The tertiary accent color for strong accent contrast.
-		public let accentTertiary: DynamicColor
+		let accentTertiary: DynamicColor
 
 		/// The semantic success color.
-		public let confirmation: DynamicColor
+		let confirmation: DynamicColor
 
 		/// The semantic warning color.
-		public let warning: DynamicColor
+		let warning: DynamicColor
 
 		/// The semantic error color.
-		public let error: DynamicColor
+		let error: DynamicColor
 	}
 }

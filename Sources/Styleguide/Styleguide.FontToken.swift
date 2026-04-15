@@ -2,9 +2,9 @@ import Foundation
 import SwiftUI
 import UIKit
 
-public extension Styleguide {
+extension Styleguide {
 	/// A semantic typography token that resolves to SwiftUI and UIKit fonts.
-	struct FontToken: Sendable {
+	public struct FontToken: Sendable {
 		/// Creates a system font token with a base size, text style, weight, and design.
 		public init(size: CGFloat, textStyle: UIFont.TextStyle, weight: UIFont.Weight = .regular, design: UIFontDescriptor.SystemDesign = .default) {
 			self.name = nil
@@ -24,22 +24,22 @@ public extension Styleguide {
 		}
 
 		/// The custom font name for the token, if the token does not use a system font.
-		public let name: String?
+		let name: String?
 
 		/// The base point size for the token before Dynamic Type scaling.
-		public let size: CGFloat
+		let size: CGFloat
 
 		/// The text style that drives Dynamic Type scaling.
-		public let textStyle: UIFont.TextStyle
+		let textStyle: UIFont.TextStyle
 
 		/// The system font weight used when the token resolves to a system font.
-		public let weight: UIFont.Weight
+		let weight: UIFont.Weight
 
 		/// The system font design used when the token resolves to a system font.
-		public let design: UIFontDescriptor.SystemDesign
+		let design: UIFontDescriptor.SystemDesign
 
 		/// The SwiftUI font for the token.
-		public var font: Font {
+		var font: Font {
 			if let name {
 				return .custom(name, size: size, relativeTo: textStyle.swiftUIFontTextStyle)
 			}
@@ -48,12 +48,12 @@ public extension Styleguide {
 		}
 
 		/// The UIKit font for the token using the current trait environment.
-		public var uiFont: UIFont {
+		var uiFont: UIFont {
 			uiFont(compatibleWith: nil)
 		}
 
 		/// The UIKit font for the token using a specific trait environment.
-		public func uiFont(compatibleWith traitCollection: UITraitCollection?) -> UIFont {
+		func uiFont(compatibleWith traitCollection: UITraitCollection?) -> UIFont {
 			UIFontMetrics(forTextStyle: textStyle).scaledFont(for: baseUIFont, compatibleWith: traitCollection)
 		}
 	}

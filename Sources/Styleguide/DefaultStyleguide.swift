@@ -1,6 +1,6 @@
 import Foundation
 
-public extension Styleguide {
+extension Styleguide {
 	/// The neutral baseline styleguide bundled with the package.
 	static let `default` = Styleguide(
 		fonts: .default,

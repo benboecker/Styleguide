@@ -2,9 +2,9 @@ import Foundation
 import SwiftUI
 import UIKit
 
-public extension Styleguide {
+extension Styleguide {
 	/// The semantic typography roles used by a styleguide.
-	struct FontStyle: Sendable {
+	public struct FontStyle: Sendable {
 		/// Creates the typography tokens for a styleguide.
 		public init(headline1: FontToken, headline2: FontToken, headline3: FontToken, headline4: FontToken, body1: FontToken, body2: FontToken, caption1: FontToken, caption2: FontToken) {
 			self.headline1 = headline1
@@ -18,7 +18,7 @@ public extension Styleguide {
 		}
 
 		/// The neutral baseline typography preset used by `Styleguide.default`.
-		public static let `default` = Self(
+		static let `default` = Self(
 			headline1: FontToken(size: 34, textStyle: .largeTitle, weight: .bold),
 			headline2: FontToken(size: 22, textStyle: .title3, weight: .semibold),
 			headline3: FontToken(size: 17, textStyle: .headline, weight: .semibold),
@@ -30,27 +30,27 @@ public extension Styleguide {
 		)
 
 		/// The primary large-display typography token.
-		public let headline1: FontToken
+		let headline1: FontToken
 
 		/// The secondary large-display typography token.
-		public let headline2: FontToken
+		let headline2: FontToken
 
 		/// The primary section-heading typography token.
-		public let headline3: FontToken
+		let headline3: FontToken
 
 		/// The compact section-heading typography token.
-		public let headline4: FontToken
+		let headline4: FontToken
 
 		/// The primary body typography token.
-		public let body1: FontToken
+		let body1: FontToken
 
 		/// The compact body typography token.
-		public let body2: FontToken
+		let body2: FontToken
 
 		/// The primary caption typography token.
-		public let caption1: FontToken
+		let caption1: FontToken
 
 		/// The compact caption typography token.
-		public let caption2: FontToken
+		let caption2: FontToken
 	}
 }

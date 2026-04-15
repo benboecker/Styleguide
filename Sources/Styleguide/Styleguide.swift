@@ -13,16 +13,16 @@ public struct Styleguide: Sendable {
 	}
 
 	/// The semantic typography roles owned by the styleguide.
-	public let fonts: FontStyle
+	let fonts: FontStyle
 
 	/// The semantic color roles owned by the styleguide.
-	public let colors: ColorStyle
+	let colors: ColorStyle
 
 	/// The semantic spacing scale owned by the styleguide.
-	public let spacing: Spacing
+	let spacing: Spacing
 
 	/// The semantic shadow roles owned by the styleguide.
-	public let shadows: Shadows
+	let shadows: Shadows
 
 	/// Returns a spacing value through the dynamic-member shorthand API.
 	public subscript(dynamicMember keypath: KeyPath<Spacing, CGFloat>) -> CGFloat {
@@ -70,30 +70,5 @@ private extension Styleguide {
 
 	subscript(_ keyPath: KeyPath<Shadows, Shadow>) -> Shadow {
 		shadows[keyPath: keyPath]
-	}
-}
-
-public extension EnvironmentValues {
-	/// The styleguide available to SwiftUI views in the environment.
-	@Entry var styleguide: Styleguide = .default
-}
-
-#Preview {
-	StyleguideShowcaseView()
-}
-
-struct StyledPreviewModifier: ViewModifier {
-	let styleguide: Styleguide
-
-	func body(content: Content) -> some View {
-		content
-			.environment(\.styleguide, styleguide)
-	}
-}
-
-public extension View {
-	/// Injects a styleguide into the view hierarchy for previewing.
-	func styledPreview(using styleguide: Styleguide) -> some View {
-		modifier(StyledPreviewModifier(styleguide: styleguide))
 	}
 }
