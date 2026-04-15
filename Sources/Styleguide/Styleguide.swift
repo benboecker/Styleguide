@@ -34,14 +34,24 @@ public struct Styleguide: Sendable {
 		self[keypath]
 	}
 
+	/// Returns a UIKit color through the dynamic-member shorthand API when the call site expects `UIColor`.
+	public subscript(dynamicMember keypath: KeyPath<ColorStyle, DynamicColor>) -> UIColor {
+		self[keypath].uiColor
+	}
+
 	/// Returns a shadow token through the dynamic-member shorthand API.
 	public subscript(dynamicMember keypath: KeyPath<Shadows, Shadow>) -> Shadow {
 		self[keypath]
 	}
 
-	/// Returns a SwiftUI font through the dynamic-member shorthand API.
+	/// Returns a SwiftUI font through the dynamic-member shorthand API while richer font metadata stays available through `fonts`.
 	public subscript(dynamicMember keypath: KeyPath<FontStyle, FontToken>) -> Font {
 		self[keypath].font
+	}
+
+	/// Returns a UIKit font through the dynamic-member shorthand API when the call site expects `UIFont`.
+	public subscript(dynamicMember keypath: KeyPath<FontStyle, FontToken>) -> UIFont {
+		self[keypath].uiFont
 	}
 }
 
