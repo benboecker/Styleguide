@@ -12,8 +12,8 @@ public extension Styleguide {
 
 		/// The neutral baseline shadow preset used by `Styleguide.default`.
 		public static let `default` = Self(
-			small: Shadow(color: DynamicColor(light: .rgba(0x0000001F), dark: .clear), radius: 4, offset: 2),
-			large: Shadow(color: DynamicColor(light: .rgba(0x00000026), dark: .clear), radius: 12, offset: 4)
+			small: Shadow(color: DynamicColor(light: "0000001F", dark: "00000000"), radius: 4, offset: 2),
+			large: Shadow(color: DynamicColor(light: "00000026", dark: "00000000"), radius: 12, offset: 4)
 		)
 
 		/// The compact shadow token for subtle elevation.

@@ -3,20 +3,44 @@ import SwiftUI
 
 /// A semantic color token that stores light and dark variants for SwiftUI and UIKit.
 public struct DynamicColor: Sendable, ShapeStyle {
-	/// Creates a color token that uses the same packed value in both appearances.
-	public init(light: HexValue) {
-		self.light = light
-		self.dark = light
+	/// Creates a color token that uses the same hexadecimal value in both appearances.
+	///
+	/// Numeric values up to `0xFFFFFF` are interpreted as opaque `RRGGBB`.
+	/// Numeric values from `0x1000000` to `0xFFFFFFFF` are interpreted as `RRGGBBAA`.
+	public init(light: UInt64) {
+		let lightValue = HexColor(light)
+
+		self.init(light: lightValue, dark: lightValue)
 	}
 
-	/// Creates a color token with separate packed values for light and dark appearances.
-	public init(light: HexValue, dark: HexValue) {
-		self.light = light
-		self.dark = dark
+	/// Creates a color token with separate hexadecimal values for light and dark appearances.
+	///
+	/// Numeric values up to `0xFFFFFF` are interpreted as opaque `RRGGBB`.
+	/// Numeric values from `0x1000000` to `0xFFFFFFFF` are interpreted as `RRGGBBAA`.
+	public init(light: UInt64, dark: UInt64) {
+		self.init(light: HexColor(light), dark: HexColor(dark))
 	}
 
-	private let light: HexValue
-	private let dark: HexValue
+	/// Creates a color token that uses the same hexadecimal string in both appearances.
+	///
+	/// The string may optionally start with `#` or `0x` and must contain exactly
+	/// 6 (`RRGGBB`) or 8 (`RRGGBBAA`) hexadecimal digits after normalization.
+	public init(light: String) {
+		let lightValue = HexColor(light)
+
+		self.init(light: lightValue, dark: lightValue)
+	}
+
+	/// Creates a color token with separate hexadecimal strings for light and dark appearances.
+	///
+	/// Each string may optionally start with `#` or `0x` and must contain exactly
+	/// 6 (`RRGGBB`) or 8 (`RRGGBBAA`) hexadecimal digits after normalization.
+	public init(light: String, dark: String) {
+		self.init(light: HexColor(light), dark: HexColor(dark))
+	}
+
+	private let light: HexColor
+	private let dark: HexColor
 
 	/// Resolves the token to the correct SwiftUI shape style for the current environment.
 	public func resolve(in environment: EnvironmentValues) -> some ShapeStyle {
@@ -61,4 +85,12 @@ public struct DynamicColor: Sendable, ShapeStyle {
 
 	/// A fully transparent color token for both appearances.
 	public static let clear = DynamicColor(light: .clear, dark: .clear)
+}
+
+private extension DynamicColor {
+	/// Creates a color token from two already-parsed hexadecimal values.
+	init(light: HexColor, dark: HexColor) {
+		self.light = light
+		self.dark = dark
+	}
 }
