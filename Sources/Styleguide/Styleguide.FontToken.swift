@@ -1,0 +1,148 @@
+import Foundation
+import SwiftUI
+import UIKit
+
+public extension Styleguide {
+	/// A semantic typography token that resolves to SwiftUI and UIKit fonts.
+	struct FontToken: Sendable {
+		/// Creates a system font token with a base size, text style, weight, and design.
+		public init(size: CGFloat, textStyle: UIFont.TextStyle, weight: UIFont.Weight = .regular, design: UIFontDescriptor.SystemDesign = .default) {
+			self.name = nil
+			self.size = size
+			self.textStyle = textStyle
+			self.weight = weight
+			self.design = design
+		}
+
+		/// Creates a custom font token that scales relative to a text style.
+		public init(name: String, size: CGFloat, textStyle: UIFont.TextStyle) {
+			self.name = name
+			self.size = size
+			self.textStyle = textStyle
+			self.weight = .regular
+			self.design = .default
+		}
+
+		/// The custom font name for the token, if the token does not use a system font.
+		public let name: String?
+
+		/// The base point size for the token before Dynamic Type scaling.
+		public let size: CGFloat
+
+		/// The text style that drives Dynamic Type scaling.
+		public let textStyle: UIFont.TextStyle
+
+		/// The system font weight used when the token resolves to a system font.
+		public let weight: UIFont.Weight
+
+		/// The system font design used when the token resolves to a system font.
+		public let design: UIFontDescriptor.SystemDesign
+
+		/// The SwiftUI font for the token.
+		public var font: Font {
+			if let name {
+				return .custom(name, size: size, relativeTo: textStyle.swiftUIFontTextStyle)
+			}
+
+			return .system(size: size, weight: weight.swiftUIFontWeight, design: design.swiftUIFontDesign)
+		}
+
+		/// The UIKit font for the token using the current trait environment.
+		public var uiFont: UIFont {
+			uiFont(compatibleWith: nil)
+		}
+
+		/// The UIKit font for the token using a specific trait environment.
+		public func uiFont(compatibleWith traitCollection: UITraitCollection?) -> UIFont {
+			UIFontMetrics(forTextStyle: textStyle).scaledFont(for: baseUIFont, compatibleWith: traitCollection)
+		}
+	}
+}
+
+private extension Styleguide.FontToken {
+	var baseUIFont: UIFont {
+		if let name, let customFont = UIFont(name: name, size: size) {
+			return customFont
+		}
+
+		let baseFont = UIFont.systemFont(ofSize: size, weight: weight)
+		guard design != .default, let descriptor = baseFont.fontDescriptor.withDesign(design) else {
+			return baseFont
+		}
+
+		return UIFont(descriptor: descriptor, size: size)
+	}
+}
+
+private extension UIFont.TextStyle {
+	var swiftUIFontTextStyle: Font.TextStyle {
+		switch self {
+		case .largeTitle:
+			return .largeTitle
+		case .title1:
+			return .title
+		case .title2:
+			return .title2
+		case .title3:
+			return .title3
+		case .headline:
+			return .headline
+		case .subheadline:
+			return .subheadline
+		case .body:
+			return .body
+		case .callout:
+			return .callout
+		case .footnote:
+			return .footnote
+		case .caption1:
+			return .caption
+		case .caption2:
+			return .caption2
+		default:
+			return .body
+		}
+	}
+}
+
+private extension UIFont.Weight {
+	var swiftUIFontWeight: Font.Weight {
+		switch self {
+		case .ultraLight:
+			return .ultraLight
+		case .thin:
+			return .thin
+		case .light:
+			return .light
+		case .medium:
+			return .medium
+		case .semibold:
+			return .semibold
+		case .bold:
+			return .bold
+		case .heavy:
+			return .heavy
+		case .black:
+			return .black
+		default:
+			return .regular
+		}
+	}
+}
+
+private extension UIFontDescriptor.SystemDesign {
+	var swiftUIFontDesign: Font.Design {
+		switch self {
+		case .default:
+			return .default
+		case .rounded:
+			return .rounded
+		case .serif:
+			return .serif
+		case .monospaced:
+			return .monospaced
+		default:
+			return .default
+		}
+	}
+}
