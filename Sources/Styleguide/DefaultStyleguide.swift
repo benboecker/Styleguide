@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import UIKit
 
 
 // MARK: - DEFINITIONS
@@ -36,8 +35,8 @@ enum Colors {
 	static let confirmation        = DynamicColor(light: 0x27ae60, dark: 0x27ae60)
 	static let warning             = DynamicColor(light: 0xf39c12, dark: 0xf39c12)
 	static let error               = DynamicColor(light: 0xc0392b, dark: 0xc0392b)
-	static let shadowSmall         = DynamicColor(light: Color.black.opacity(0.15), dark: .clear)
-	static let shadowLarge         = DynamicColor(light: Color.black.opacity(0.15), dark: .clear)
+	static let shadowSmall         = DynamicColor(light: .rgba(0x00000026), dark: .clear)
+	static let shadowLarge         = DynamicColor(light: .rgba(0x00000026), dark: .clear)
 }
 
 

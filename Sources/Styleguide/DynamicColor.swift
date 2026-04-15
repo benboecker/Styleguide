@@ -1,74 +1,64 @@
-//
-//  DynamicColor.swift
-//  Design
-//
-//  Created by Benjamin Böcker on 03.01.25.
-//
-
+import UIKit
 import SwiftUI
 
-
-public struct DynamicColor: ShapeStyle {
-	public init(light: UInt) {
-		self.light = Color(hex: light)
-		self.dark = Color(hex: light)
-	}
-	
-	public init(light: UInt, dark: UInt) {
-		self.light = Color(hex: light)
-		self.dark = Color(hex: dark)
-	}
-	
-	public init(light: Color) {
+/// A semantic color token that stores light and dark variants for SwiftUI and UIKit.
+public struct DynamicColor: Sendable, ShapeStyle {
+	/// Creates a color token that uses the same packed value in both appearances.
+	public init(light: HexValue) {
 		self.light = light
 		self.dark = light
 	}
-	
-	public init(light: Color, dark: Color) {
+
+	/// Creates a color token with separate packed values for light and dark appearances.
+	public init(light: HexValue, dark: HexValue) {
 		self.light = light
 		self.dark = dark
 	}
 
-	private let light: Color
-	private let dark: Color
-	
-	@Environment(\.colorScheme) private var colorScheme
-	
+	private let light: HexValue
+	private let dark: HexValue
+
+	/// Resolves the token to the correct SwiftUI shape style for the current environment.
 	public func resolve(in environment: EnvironmentValues) -> some ShapeStyle {
-		if environment.colorScheme == .light {
-			return light
-		} else {
-			return dark
+		resolvedColor(in: environment)
+	}
+
+	/// Resolves the token to a concrete SwiftUI color for a specific environment.
+	public func resolvedColor(in environment: EnvironmentValues) -> Color {
+		resolvedColor(for: environment.colorScheme)
+	}
+
+	/// Resolves the token to a concrete SwiftUI color for a specific color scheme.
+	public func resolvedColor(for colorScheme: ColorScheme) -> Color {
+		switch colorScheme {
+		case .light:
+			light.color
+		case .dark:
+			dark.color
+		@unknown default:
+			light.color
 		}
 	}
-	
-	public static let clear: DynamicColor = DynamicColor(light: .clear, dark: .clear)
-	
-	public var color: Color {
-		light
-		//colorScheme == .light ? light : dark
-	}
-	
-	public var gradient: AnyGradient {
-		color.gradient
-	}
-}
 
-public extension ShapeStyle where Self == DynamicColor {
-	var gradient: AnyGradient {
-		self.gradient
+	/// Returns a dynamic UIKit color that adapts to the current trait environment.
+	public var uiColor: UIColor {
+		UIColor { traitCollection in
+			resolvedUIColor(for: traitCollection)
+		}
 	}
-}
 
-
-extension Color {
-	init(hex: UInt, alpha: Double = 1) {
-		self.init(
-			.sRGB,
-			red: Double((hex >> 16) & 0xff) / 255,
-			green: Double((hex >> 08) & 0xff) / 255,
-			blue: Double((hex >> 00) & 0xff) / 255,
-			opacity: alpha
-		)
+	/// Resolves the token to a concrete UIKit color for a specific trait collection.
+	public func resolvedUIColor(for traitCollection: UITraitCollection) -> UIColor {
+		switch traitCollection.userInterfaceStyle {
+		case .dark:
+			dark.uiColor
+		case .light, .unspecified:
+			light.uiColor
+		@unknown default:
+			light.uiColor
+		}
 	}
+
+	/// A fully transparent color token for both appearances.
+	public static let clear = DynamicColor(light: .clear, dark: .clear)
 }
