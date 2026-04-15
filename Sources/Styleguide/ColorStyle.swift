@@ -22,18 +22,18 @@ extension Styleguide {
 
 		/// The neutral baseline color preset used by `Styleguide.default`.
 		static let `default` = Self(
-			foregroundPrimary: DynamicColor(light: 0x111827, dark: 0xF9FAFB),
+			foregroundPrimary:   DynamicColor(light: 0x111827, dark: 0xF9FAFB),
 			foregroundSecondary: DynamicColor(light: 0x4B5563, dark: 0xD1D5DB),
-			foregroundTertiary: DynamicColor(light: 0x6B7280, dark: 0x9CA3AF),
-			backgroundPrimary: DynamicColor(light: 0xFFFFFF, dark: 0x111827),
+			foregroundTertiary:  DynamicColor(light: 0x6B7280, dark: 0x9CA3AF),
+			backgroundPrimary:   DynamicColor(light: 0xFFFFFF, dark: 0x111827),
 			backgroundSecondary: DynamicColor(light: 0xF3F4F6, dark: 0x1F2937),
-			backgroundTertiary: DynamicColor(light: 0xE5E7EB, dark: 0x374151),
-			accentPrimary: DynamicColor(light: 0x2563EB, dark: 0x60A5FA),
-			accentSecondary: DynamicColor(light: 0xDBEAFE, dark: 0x1E3A8A),
-			accentTertiary: DynamicColor(light: 0x1D4ED8, dark: 0xBFDBFE),
-			confirmation: DynamicColor(light: 0x15803D, dark: 0x4ADE80),
-			warning: DynamicColor(light: 0xB45309, dark: 0xFBBF24),
-			error: DynamicColor(light: 0xB91C1C, dark: 0xF87171)
+			backgroundTertiary:  DynamicColor(light: 0xE5E7EB, dark: 0x374151),
+			accentPrimary:       DynamicColor(light: 0x2563EB, dark: 0x60A5FA),
+			accentSecondary:     DynamicColor(light: 0xDBEAFE, dark: 0x1E3A8A),
+			accentTertiary:      DynamicColor(light: 0x1D4ED8, dark: 0xBFDBFE),
+			confirmation:        DynamicColor(light: 0x15803D, dark: 0x4ADE80),
+			warning:             DynamicColor(light: 0xB45309, dark: 0xFBBF24),
+			error:               DynamicColor(light: 0xB91C1C, dark: 0xF87171)
 		)
 
 		/// The primary foreground color for readable content.
